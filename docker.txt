@@ -1,0 +1,4 @@
+docker build -t ro/table .
+docker stop table
+docker rm table
+docker run -d --name="table" -p "81:80"  ro/table

@@ -39,7 +39,9 @@ export class CriticalPath {
     }
     add_new_link(node) {
         this.nodes.unshift(node);
-        this.links.unshift(new CriticalPathLink(node.id, this.nodes[1].id, node.duration));
+        this.links.unshift(
+            new CriticalPathLink(node.id, this.nodes[1].id, node.duration)
+        );
         return this;
     }
 }

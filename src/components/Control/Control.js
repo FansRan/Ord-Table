@@ -1,36 +1,51 @@
 import React from "react";
-import { Col, Form, Button, Row } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { Form, Button, Row } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { Task } from "../../utils/model/data.model";
 
-
-const createTask = (tasksCount, dispatch) => {
+const createTask = (e, dispatch) => {
+    e.target.value =
+        e.target.value > 26 ? 26 : e.target.value < 1 ? 1 : e.target.value;
     const all_tasks = {};
     const list_tasks = [];
-    for (let i = 0; i < tasksCount; i++) {
-        all_tasks["T" + i] = new Task("T" + i);
-        list_tasks.push(all_tasks["T" + i]);
+    for (let i = 0; i < e.target.value; i++) {
+        all_tasks[String.fromCharCode(i + 65)] = new Task(
+            String.fromCharCode(i + 65)
+        );
+        list_tasks.push(all_tasks[String.fromCharCode(i + 65)]);
     }
-    dispatch({ type: 'INITIATE', count: tasksCount, all: all_tasks, list: list_tasks });
-}
+    dispatch({
+        type: "INITIATE",
+        count: e.target.value,
+        all: all_tasks,
+        list: list_tasks,
+    });
+};
 
 function Control() {
+    const computable = useSelector((state) => state.computable);
     const dispatch = useDispatch();
 
     return (
         <Form>
-            <Form.Group as={Row} className="mb-3" controlId="formTasksCount">
-                <Row>
-                    <Form.Label column sm="10">
-                        Nombre des tâches
-                    </Form.Label>
-                    <Col sm="12">
-                        <Form.Control type="number" pattern="[0-9]*" onChange={(e) => createTask(e.target.value, dispatch)} />
-                    </Col>
-                    <Col sm="12">
-                        <Button variant="primary" onClick={() => dispatch({ type: 'COMPUTE' })}>Compute</Button>
-                    </Col>
-                </Row>
+            <Form.Group as={Row} controlId="formTasksCount">
+                <Form.Label column sm="12">
+                    Nombre des tâches
+                </Form.Label>
+                <Form.Control
+                    type="number"
+                    min={1}
+                    max={26}
+                    onChange={(e) => createTask(e, dispatch)}
+                />
+                <Button
+                    className="mt-2"
+                    variant="primary"
+                    disabled={!computable}
+                    onClick={() => dispatch({ type: "COMPUTE" })}
+                >
+                    Calculer
+                </Button>
             </Form.Group>
         </Form>
     );

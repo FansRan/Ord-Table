@@ -4,22 +4,25 @@ import TaskRow from "./TaskRow";
 import ResultRow from "./ResultRow";
 import InputRow from "./InputRow";
 
-import './table.css';
-
+import "./table.css";
 
 function Table(props) {
-    const tasksCount = useSelector(state => state.tasksCount);
-    const computed = useSelector(state => state.computed);
+    const computed = useSelector((state) => state.computed);
 
     return (
         <>
             <table id="root-table">
                 <tbody>
-                    {Boolean(tasksCount) && <TaskRow taskType="base" tableType={props.type} />}
-                    {Boolean(tasksCount) && props.type === "input" && <InputRow />}
-                    {props.type === "input" && computed && <TaskRow taskType="next" tableType="input" />}
+                    <TaskRow taskType="base" tableType={props.type} />
+                    {props.type === "input" && <InputRow />}
+                    {props.type === "input" && computed && (
+                        <TaskRow taskType="next" tableType="input" />
+                    )}
                     {props.type === "early" && <ResultRow tableType="early" />}
                     {props.type === "late" && <ResultRow tableType="late" />}
+                    {props.type === "margin" && (
+                        <ResultRow tableType="margin" />
+                    )}
                 </tbody>
             </table>
         </>
