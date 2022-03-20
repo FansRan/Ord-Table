@@ -3,26 +3,32 @@ import { Form, Button, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Task } from "../../utils/model/data.model";
 
-const createTask = (e, dispatch) => {
+const createTask = (e, listTasks, dispatch) => {
     e.target.value =
         e.target.value > 26 ? 26 : e.target.value < 1 ? 1 : e.target.value;
-    const all_tasks = {};
-    const list_tasks = [];
-    for (let i = 0; i < e.target.value; i++) {
-        all_tasks[String.fromCharCode(i + 65)] = new Task(
-            String.fromCharCode(i + 65)
-        );
-        list_tasks.push(all_tasks[String.fromCharCode(i + 65)]);
+    let all_tasks = {};
+    let list_tasks = [];
+    if (listTasks.length > e.target.value) {
+        list_tasks = listTasks.slice(0, e.target.value);
+    } else {
+        list_tasks = listTasks.slice();
+        for (let i = listTasks.length; i < e.target.value; i++) {
+            list_tasks.push(new Task(String.fromCharCode(i + 65)));
+        }
     }
+    list_tasks.forEach((task) => (all_tasks[task.id] = task));
+
     dispatch({
         type: "INITIATE",
         count: e.target.value,
         all: all_tasks,
         list: list_tasks,
+        computabled: list_tasks.every((task) => task.duration),
     });
 };
 
 function Control() {
+    const listTasks = useSelector((state) => state.listTasks);
     const computable = useSelector((state) => state.computable);
     const dispatch = useDispatch();
 
@@ -36,7 +42,7 @@ function Control() {
                     type="number"
                     min={1}
                     max={26}
-                    onChange={(e) => createTask(e, dispatch)}
+                    onChange={(e) => createTask(e, listTasks, dispatch)}
                 />
                 <Button
                     className="mt-2"

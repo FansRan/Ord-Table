@@ -7,14 +7,15 @@ import {
 } from "../../utils/algorithm/table";
 
 function InputRow() {
-    const raz = useSelector((state) => state.raz);
     const computing = useSelector((state) => state.computing);
     const allTasks = useSelector((state) => state.allTasks);
     const listTasks = useSelector((state) => state.listTasks);
     const linkedTask = useSelector((state) => state.linkedTask);
-    const dispatch = useDispatch();
     const [inputVal, setInnputVal] = useState("");
     const previousInputVal = useRef("");
+    const dispatch = useDispatch();
+
+    console.log(allTasks);
 
     useEffect(() => {
         if (computing) {
@@ -46,15 +47,6 @@ function InputRow() {
             });
         }
     }, [computing]);
-
-    useEffect(() => {
-        if (raz) {
-            document
-                .querySelectorAll(".row-input")
-                .forEach((element) => (element.value = ""));
-            dispatch({ type: "INITIATED" });
-        }
-    }, [raz]);
 
     useEffect(() => {
         previousInputVal.current = inputVal;

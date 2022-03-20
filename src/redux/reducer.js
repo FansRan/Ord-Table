@@ -10,7 +10,6 @@ const initialState = {
     computable: false,
     computing: false,
     computed: false,
-    raz: false,
 };
 
 export default (state = initialState, action) => {
@@ -23,16 +22,9 @@ export default (state = initialState, action) => {
                 linkedTask: new LinkedTask(),
                 finalDate: 0,
                 criticalPath: null,
-                computable: false,
+                computable: action.computabled,
                 computing: false,
                 computed: false,
-                raz: true,
-            };
-        case "INITIATED":
-            return {
-                ...state,
-                computable: false,
-                raz: false,
             };
         case "COMPUTABLE":
             return {
