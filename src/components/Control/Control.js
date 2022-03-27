@@ -14,7 +14,11 @@ const createTask = (e, listTasks, dispatch) => {
             if (list_tasks[i].previous_tasks)
                 list_tasks[i].previous_tasks = list_tasks[
                     i
-                ].previous_tasks.filter((p) => list_tasks.includes(p));
+                ].previous_tasks.filter(
+                    (p) =>
+                        list_tasks.includes(p) ||
+                        list_tasks.map((t) => t.id).includes(p)
+                );
     } else {
         list_tasks = listTasks.slice();
         for (let i = listTasks.length; i < e.target.value; i++)
