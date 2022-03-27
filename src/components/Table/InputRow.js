@@ -18,7 +18,6 @@ export default function InputRow() {
 
     useEffect(() => {
         if (computing) {
-            console.log(allTasks);
             linkedTask.start_tasks = [];
             linkedTask.end_tasks = [];
             for (const id in allTasks) {
