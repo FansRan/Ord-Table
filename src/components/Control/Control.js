@@ -26,7 +26,6 @@ const createTask = (e, listTasks, dispatch) => {
         for (let i = listTasks.length; i < e.target.value; i++)
             list_tasks.push(new Task(String.fromCharCode(i + 65)));
     }
-    console.log(list_tasks);
 
     dispatch({
         type: "INITIATE",
