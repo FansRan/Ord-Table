@@ -10,7 +10,7 @@ const renderCell = (tasks, tableType) => {
     ));
 };
 
-function ResultRow(props) {
+export default function ResultRow(props) {
     const listTasks = useSelector((state) => state.listTasks);
     return (
         <>
@@ -35,5 +35,3 @@ function ResultRow(props) {
         </>
     );
 }
-
-export default ResultRow;

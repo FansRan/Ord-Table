@@ -1,20 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import reportWebVitals from './reportWebVitals';
-import Home from './views/Home/Home.js';
-import store from './redux/store';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import reportWebVitals from "./reportWebVitals";
+import App from "./App.js";
+import store from "./redux/store";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.css";
 
 ReactDOM.render(
-  <Provider store={store}>
-    <React.StrictMode>
-      <Home />
-    </React.StrictMode>
-  </Provider>  ,
-  document.getElementById('root')
+    <Provider store={store}>
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    </Provider>,
+    document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -6,7 +6,7 @@ import InputRow from "./InputRow";
 
 import "./table.css";
 
-function Table(props) {
+export default function Table(props) {
     const computed = useSelector((state) => state.computed);
 
     return (
@@ -28,5 +28,3 @@ function Table(props) {
         </>
     );
 }
-
-export default Table;

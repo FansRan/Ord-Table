@@ -26,7 +26,7 @@ const renderCell = (tasks, tableType, taskType) => {
         ));
 };
 
-function TaskRow(props) {
+export default function TaskRow(props) {
     const listTasks = useSelector((state) => state.listTasks);
     const finalDate = useSelector((state) => state.finalDate);
     return (
@@ -49,5 +49,3 @@ function TaskRow(props) {
         </>
     );
 }
-
-export default TaskRow;

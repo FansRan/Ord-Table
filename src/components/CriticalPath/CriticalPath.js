@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import ForceGraph2D from "react-force-graph-2d";
 import { useSelector } from "react-redux";
 
-function CriticalPath() {
+export default function CriticalPath() {
     const criticalPath = useSelector((state) => state.criticalPath);
     const parent = document.getElementById("criticalPathGraph");
     const graphRef = useRef();
@@ -11,8 +11,8 @@ function CriticalPath() {
         <ForceGraph2D
             ref={graphRef}
             graphData={criticalPath}
-            height={200}
-            width={parent.clientWidth - 30}
+            height={criticalPath.nodes.length * 25}
+            width={parent.clientWidth}
             nodeLabel="id"
             nodeCanvasObject={(node, ctx, globalScale) => {
                 ctx.strokeStyle = "black";
@@ -52,10 +52,8 @@ function CriticalPath() {
                 parent.clientWidth / (criticalPath.nodes.length * 3)
             }
             onEngineStop={() => {
-                graphRef.current.zoomToFit(10);
+                graphRef.current.zoomToFit();
             }}
         />
     );
 }
-
-export default CriticalPath;

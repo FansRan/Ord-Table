@@ -10,11 +10,15 @@ const createTask = (e, listTasks, dispatch) => {
     let list_tasks = [];
     if (listTasks.length > e.target.value) {
         list_tasks = listTasks.slice(0, e.target.value);
+        for (let i = 0; i < e.target.value; i++)
+            if (list_tasks[i].previous_tasks)
+                list_tasks[i].previous_tasks = list_tasks[
+                    i
+                ].previous_tasks.filter((p) => list_tasks.includes(p));
     } else {
         list_tasks = listTasks.slice();
-        for (let i = listTasks.length; i < e.target.value; i++) {
+        for (let i = listTasks.length; i < e.target.value; i++)
             list_tasks.push(new Task(String.fromCharCode(i + 65)));
-        }
     }
     list_tasks.forEach((task) => (all_tasks[task.id] = task));
 
@@ -27,7 +31,7 @@ const createTask = (e, listTasks, dispatch) => {
     });
 };
 
-function Control() {
+export default function Control() {
     const listTasks = useSelector((state) => state.listTasks);
     const computable = useSelector((state) => state.computable);
     const dispatch = useDispatch();
@@ -56,5 +60,3 @@ function Control() {
         </Form>
     );
 }
-
-export default Control;

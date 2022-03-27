@@ -6,19 +6,19 @@ import {
     find_critical_path,
 } from "../../utils/algorithm/table";
 
-function InputRow() {
+export default function InputRow() {
     const computing = useSelector((state) => state.computing);
     const allTasks = useSelector((state) => state.allTasks);
     const listTasks = useSelector((state) => state.listTasks);
     const linkedTask = useSelector((state) => state.linkedTask);
+    const [previousTasks, setPreviousTasks] = useState(listTasks.map(() => ""));
     const [inputVal, setInnputVal] = useState("");
     const previousInputVal = useRef("");
     const dispatch = useDispatch();
 
-    console.log(allTasks);
-
     useEffect(() => {
         if (computing) {
+            console.log(allTasks);
             linkedTask.start_tasks = [];
             linkedTask.end_tasks = [];
             for (const id in allTasks) {
@@ -51,6 +51,14 @@ function InputRow() {
     useEffect(() => {
         previousInputVal.current = inputVal;
     }, [inputVal]);
+
+    useEffect(() => {
+        setPreviousTasks(
+            listTasks.map((task) =>
+                task.previous_tasks ? task.previous_tasks.toString() : ""
+            )
+        );
+    }, [listTasks]);
 
     const inPreviousTasks = (id, previous_id) => {
         if (id === previous_id) return true;
@@ -88,7 +96,7 @@ function InputRow() {
                     <td key={task.id}>
                         <input
                             type="text"
-                            className="row-input duration-field"
+                            className="duration-input"
                             style={{
                                 maxWidth: "50px",
                                 textAlign: "center",
@@ -123,17 +131,17 @@ function InputRow() {
             </tr>
             <tr id="previous-task">
                 <td>T.ant</td>
-                {listTasks.map((task) => (
+                {listTasks.map((task, index) => (
                     <td key={task.id}>
                         <input
                             type="text"
-                            className="row-input"
                             style={{
                                 maxWidth: "50px",
                                 textAlign: "center",
                                 border: 0,
                             }}
                             placeholder="-"
+                            value={previousTasks[index]}
                             onChange={(e) => {
                                 e.preventDefault();
                                 if (
@@ -141,7 +149,13 @@ function InputRow() {
                                         e.target.value
                                     )
                                 )
-                                    e.target.value = previousInputVal.current;
+                                    setPreviousTasks(
+                                        previousTasks.map((v, k) =>
+                                            k === index
+                                                ? previousInputVal.current
+                                                : v
+                                        )
+                                    );
                                 else {
                                     e.target.value =
                                         e.target.value.toUpperCase();
@@ -155,6 +169,11 @@ function InputRow() {
                                             : "";
                                     }
                                     setInnputVal(e.target.value);
+                                    setPreviousTasks(
+                                        previousTasks.map((v, k) =>
+                                            k === index ? e.target.value : v
+                                        )
+                                    );
                                 }
                             }}
                             onBlur={(e) => {
@@ -172,5 +191,3 @@ function InputRow() {
         </>
     );
 }
-
-export default InputRow;

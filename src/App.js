@@ -1,17 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import Control from "../../components/Control/Control";
-import CriticalPath from "../../components/CriticalPath/CriticalPath";
-import Table from "../../components/Table/Table";
+import Control from "./components/Control/Control";
+import CriticalPath from "./components/CriticalPath/CriticalPath";
+import Table from "./components/Table/Table";
 
-function Home() {
+export default function App() {
     const tasksCount = useSelector((state) => state.tasksCount);
     const computed = useSelector((state) => state.computed);
     const criticalPath = useSelector((state) => state.criticalPath);
+    const [mainHeight, setMainHeight] = useState(window.innerHeight);
+    useEffect(() => {
+        setMainHeight(
+            document.getElementById("main").offsetHeight > window.innerHeight
+                ? "inherit"
+                : window.innerHeight
+        );
+    });
     return (
-        <Container as={Row} className="px-5" fluid>
-            <Col sm={2}>
+        <Container id="main" as={Row} className="px-2" fluid>
+            <Col
+                md={2}
+                className="p-4"
+                style={{
+                    backgroundColor: "rgba(0, 0, 0, .5)",
+                    height: mainHeight,
+                }}
+            >
+                <h4>Tableau</h4>
                 <Control />
             </Col>
             <Col className="pe-5" sm={10}>
@@ -29,11 +45,7 @@ function Home() {
                         </>
                     )}
                 </div>
-                <div
-                    id="criticalPathGraph"
-                    className="my-2 p-3"
-                    style={{ overflowX: "auto", overflowY: "auto" }}
-                >
+                <div id="criticalPathGraph" className="my-2 p-3">
                     {criticalPath && (
                         <>
                             <u>Chémin critique</u>: <CriticalPath />
@@ -58,5 +70,3 @@ function Home() {
         </Container>
     );
 }
-
-export default Home;
