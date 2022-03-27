@@ -10,6 +10,7 @@ function InputRow() {
     const computing = useSelector((state) => state.computing);
     const listTasks = useSelector((state) => state.listTasks);
     const linkedTask = useSelector((state) => state.linkedTask);
+    const [previousTasks, setPreviousTasks] = useState(listTasks.map(""));
     const [inputVal, setInnputVal] = useState("");
     const previousInputVal = useRef("");
     const dispatch = useDispatch();
@@ -46,6 +47,10 @@ function InputRow() {
     useEffect(() => {
         previousInputVal.current = inputVal;
     }, [inputVal]);
+
+    useEffect(() => {
+        setPreviousTasks();
+    }, [listTasks]);
 
     const inPreviousTasks = (id, previous_id) => {
         if (id === previous_id) return true;
@@ -120,7 +125,7 @@ function InputRow() {
             </tr>
             <tr id="previous-task">
                 <td>T.ant</td>
-                {listTasks.map((task) => (
+                {listTasks.map((task, index) => (
                     <td key={task.id}>
                         <input
                             type="text"
@@ -131,6 +136,7 @@ function InputRow() {
                                 border: 0,
                             }}
                             placeholder="-"
+                            value={previousTasks[index]}
                             onChange={(e) => {
                                 e.preventDefault();
                                 if (
