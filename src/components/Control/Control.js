@@ -11,7 +11,7 @@ const createTask = (e, listTasks, dispatch) => {
     if (listTasks.length > e.target.value) {
         list_tasks = listTasks.slice(0, e.target.value);
         for (let i = 0; i < e.target.value; i++)
-            if (list_tasks[i].previous_tasks)
+            if (list_tasks[i].previous_tasks) {
                 list_tasks[i].previous_tasks = list_tasks[
                     i
                 ].previous_tasks.filter(
@@ -19,6 +19,9 @@ const createTask = (e, listTasks, dispatch) => {
                         list_tasks.includes(p) ||
                         list_tasks.map((t) => t.id).includes(p)
                 );
+                if (!list_tasks[i].previous_tasks.length)
+                    list_tasks[i].previous_tasks = null;
+            }
     } else {
         list_tasks = listTasks.slice();
         for (let i = listTasks.length; i < e.target.value; i++)
