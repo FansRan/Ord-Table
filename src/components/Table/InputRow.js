@@ -10,7 +10,7 @@ function InputRow() {
     const computing = useSelector((state) => state.computing);
     const listTasks = useSelector((state) => state.listTasks);
     const linkedTask = useSelector((state) => state.linkedTask);
-    const [previousTasks, setPreviousTasks] = useState(listTasks.map(""));
+    const [previousTasks, setPreviousTasks] = useState(listTasks.map(() => ""));
     const [inputVal, setInnputVal] = useState("");
     const previousInputVal = useRef("");
     const dispatch = useDispatch();
@@ -49,7 +49,11 @@ function InputRow() {
     }, [inputVal]);
 
     useEffect(() => {
-        setPreviousTasks();
+        setPreviousTasks(
+            listTasks.map((task) =>
+                task.previous_tasks ? task.previous_tasks.toString() : ""
+            )
+        );
     }, [listTasks]);
 
     const inPreviousTasks = (id, previous_id) => {
@@ -144,7 +148,13 @@ function InputRow() {
                                         e.target.value
                                     )
                                 )
-                                    e.target.value = previousInputVal.current;
+                                    setPreviousTasks(
+                                        previousTasks.map((v, k) =>
+                                            k === index
+                                                ? previousInputVal.current
+                                                : v
+                                        )
+                                    );
                                 else {
                                     e.target.value =
                                         e.target.value.toUpperCase();
@@ -158,6 +168,11 @@ function InputRow() {
                                             : "";
                                     }
                                     setInnputVal(e.target.value);
+                                    setPreviousTasks(
+                                        previousTasks.map((v, k) =>
+                                            k === index ? e.target.value : v
+                                        )
+                                    );
                                 }
                             }}
                             onBlur={(e) => {
