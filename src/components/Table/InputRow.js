@@ -6,9 +6,8 @@ import {
     find_critical_path,
 } from "../../utils/algorithm/table";
 
-export default function InputRow() {
+function InputRow() {
     const computing = useSelector((state) => state.computing);
-    const allTasks = useSelector((state) => state.allTasks);
     const listTasks = useSelector((state) => state.listTasks);
     const linkedTask = useSelector((state) => state.linkedTask);
     const [previousTasks, setPreviousTasks] = useState(listTasks.map(() => ""));
@@ -20,23 +19,21 @@ export default function InputRow() {
         if (computing) {
             linkedTask.start_tasks = [];
             linkedTask.end_tasks = [];
-            for (const id in allTasks) {
-                allTasks[id].early_date = null;
-                allTasks[id].late_date = null;
-                allTasks[id].margin = null;
-                allTasks[id].next_tasks = [];
-            }
-            for (const id in allTasks) {
-                if (allTasks[id].previous_tasks) {
-                    if (typeof allTasks[id].previous_tasks[0] === "string")
-                        allTasks[id].previous_tasks = allTasks[
-                            id
-                        ].previous_tasks.map((task) => allTasks[task]);
-                    allTasks[id].previous_tasks.forEach((task) =>
-                        task.next_tasks.push(allTasks[id])
-                    );
-                } else linkedTask.start_tasks.push(allTasks[id]);
-            }
+            listTasks.forEach((task) => {
+                task.early_date = null;
+                task.late_date = null;
+                task.margin = null;
+                task.next_tasks = [];
+            });
+            listTasks.forEach((task) => {
+                if (task.previous_tasks) {
+                    if (typeof task.previous_tasks[0] === "string")
+                        task.previous_tasks = task.previous_tasks.map((id) =>
+                            listTasks.find((t) => t.id === id)
+                        );
+                    task.previous_tasks.forEach((p) => p.next_tasks.push(task));
+                } else linkedTask.start_tasks.push(task);
+            });
             const final_date = compute_final_achievment_date(linkedTask);
             compute_late_date(final_date, linkedTask);
             dispatch({
@@ -61,10 +58,13 @@ export default function InputRow() {
 
     const inPreviousTasks = (id, previous_id) => {
         if (id === previous_id) return true;
-        else if (allTasks[previous_id] && allTasks[previous_id].previous_tasks)
-            return allTasks[previous_id].previous_tasks.some((p) =>
-                inPreviousTasks(id, p)
-            );
+        else if (
+            listTasks.find((t) => t.id === previous_id) &&
+            listTasks.find((t) => t.id === previous_id).previous_tasks
+        )
+            return listTasks
+                .find((t) => t.id === previous_id)
+                .previous_tasks.some((p) => inPreviousTasks(id, p));
         else return false;
     };
 
@@ -75,15 +75,14 @@ export default function InputRow() {
                     .split(",")
                     .filter(
                         (previous_id) =>
-                            allTasks[previous_id] &&
+                            listTasks.find((t) => t.id === previous_id) &&
                             previous_id !== id &&
                             !inPreviousTasks(id, previous_id)
                     )
             ),
         ];
-        allTasks[id].previous_tasks = input_value.toString()
-            ? input_value
-            : null;
+        listTasks.find((t) => t.id === id).previous_tasks =
+            input_value.toString() ? input_value : null;
         return input_value;
     };
 
@@ -95,7 +94,7 @@ export default function InputRow() {
                     <td key={task.id}>
                         <input
                             type="text"
-                            className="duration-input"
+                            className="row-input duration-field"
                             style={{
                                 maxWidth: "50px",
                                 textAlign: "center",
@@ -119,9 +118,9 @@ export default function InputRow() {
                             }}
                             onBlur={(e) => {
                                 e.preventDefault();
-                                allTasks[task.id].duration = parseInt(
-                                    e.target.value
-                                );
+                                listTasks.find(
+                                    (t) => t.id === task.id
+                                ).duration = parseInt(e.target.value);
                                 setInnputVal("");
                             }}
                         />
@@ -134,6 +133,7 @@ export default function InputRow() {
                     <td key={task.id}>
                         <input
                             type="text"
+                            className="row-input"
                             style={{
                                 maxWidth: "50px",
                                 textAlign: "center",
@@ -190,3 +190,5 @@ export default function InputRow() {
         </>
     );
 }
+
+export default InputRow;

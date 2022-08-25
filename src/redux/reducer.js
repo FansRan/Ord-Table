@@ -2,7 +2,6 @@ import { LinkedTask } from "../utils/model/data.model";
 
 const initialState = {
     tasksCount: 0,
-    allTasks: {},
     listTasks: [],
     linkedTask: new LinkedTask(),
     finalDate: 0,
@@ -17,7 +16,6 @@ export default (state = initialState, action) => {
         case "INITIATE":
             return {
                 tasksCount: action.count,
-                allTasks: action.all,
                 listTasks: action.list,
                 linkedTask: new LinkedTask(),
                 finalDate: 0,

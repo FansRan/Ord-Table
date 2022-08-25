@@ -6,7 +6,6 @@ import { Task } from "../../utils/model/data.model";
 const createTask = (e, listTasks, dispatch) => {
     e.target.value =
         e.target.value > 26 ? 26 : e.target.value < 1 ? 1 : e.target.value;
-    let all_tasks = {};
     let list_tasks = [];
     if (listTasks.length > e.target.value) {
         list_tasks = listTasks.slice(0, e.target.value);
@@ -27,12 +26,10 @@ const createTask = (e, listTasks, dispatch) => {
         for (let i = listTasks.length; i < e.target.value; i++)
             list_tasks.push(new Task(String.fromCharCode(i + 65)));
     }
-    list_tasks.forEach((task) => (all_tasks[task.id] = task));
 
     dispatch({
         type: "INITIATE",
         count: e.target.value,
-        all: all_tasks,
         list: list_tasks,
         computabled: list_tasks.every((task) => task.duration),
     });
