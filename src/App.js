@@ -23,46 +23,57 @@ export default function App() {
                 md={2}
                 className="p-4"
                 style={{
-                    backgroundColor: "rgba(0, 0, 0, .5)",
+                    backgroundColor: "#314351",
                     height: mainHeight,
                 }}
             >
-                <h4>Tableau</h4>
+                <h4
+                    style={{
+                        color: "#eeeeee",
+                    }}
+                >
+                    Tableau
+                </h4>
                 <Control />
             </Col>
             <Col className="pe-5" sm={10}>
                 <div className="my-2 p-3" style={{ overflowX: "auto" }}>
                     {Boolean(tasksCount) && (
                         <>
-                            <u>Données</u>: <Table type="input" />
+                            <h5>Données</h5>
+                            <Table type="input" />
                         </>
                     )}
                 </div>
                 <div className="my-2 p-3" style={{ overflowX: "auto" }}>
                     {computed && (
                         <>
-                            <u>Date au plus tôt</u>: <Table type="early" />
+                            <h5>Date au plus tôt</h5>
+                            <Table type="early" />
                         </>
                     )}
                 </div>
                 <div id="criticalPathGraph" className="my-2 p-3">
                     {criticalPath && (
                         <>
-                            <u>Chémin critique</u>: <CriticalPath />
+                            <h5>Chémin critique</h5>
+                            <CriticalPath />
                         </>
                     )}
                 </div>
                 <div className="my-2 p-3" style={{ overflowX: "auto" }}>
                     {computed && (
                         <>
-                            <u>Date au plus tard</u>: <Table type="late" />
+                            <h5>Date au plus tard</h5>
+                            <Table type="late" />
                         </>
                     )}
                 </div>
                 <div className="my-2 p-3" style={{ overflowX: "auto" }}>
                     {computed && (
                         <>
-                            <u>Marges</u>: <Table type="margin" />
+                            <h5>Marges</h5>
+                            <Table type="margin" />
                         </>
                     )}
                 </div>

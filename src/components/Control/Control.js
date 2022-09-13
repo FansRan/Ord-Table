@@ -43,7 +43,14 @@ export default function Control() {
     return (
         <Form>
             <Form.Group as={Row} controlId="formTasksCount">
-                <Form.Label column sm="12">
+                <Form.Label
+                    column
+                    sm="12"
+                    style={{
+                        color: "#eeeeee",
+                        fontFamily: "cursive",
+                    }}
+                >
                     Nombre des tâches
                 </Form.Label>
                 <Form.Control
