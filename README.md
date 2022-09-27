@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# ORD-TABLE
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is for solving operational research task scheduling problem, it's build with React and JavaScript
 
 ## Available Scripts
 
